@@ -5,8 +5,6 @@ import (
 	"fmt"
 	"image"
 	"image/color"
-	"image/draw"
-	"image/jpeg"
 	"image/png"
 	"os"
 	"strconv"
@@ -43,12 +41,12 @@ type LevelyInput struct {
 	shiny             bool
 }
 
-type UserInput struct {
-	UserName string
-	Pfp      *os.File
-	Level    int
-	XP       int
-}
+// type UserInput struct {
+// 	UserName string
+// 	Pfp      image.Image
+// 	Level    int
+// 	XP       int
+// }
 
 type LeaderBoardInput struct {
 	FirstPlace        UserInput
@@ -66,74 +64,74 @@ var primaryColorRGBA color.Color = color.RGBA{R: 4, G: 168, B: 195, A: 255}
 
 const scale int = 2
 
-func main() {
-	fmt.Println("Hello, World!")
+// func main() {
+// 	fmt.Println("Hello, World!")
 
-	// read UIMG user image
-	UIMG, _ := os.Open("UIMG.png")
-	UIMG2, _ := os.Open("UIMG.png")
-	UIMG3, _ := os.Open("UIMG.png")
-	defer UIMG.Close()
-	defer UIMG2.Close()
-	defer UIMG3.Close()
+// 	// read UIMG user image
+// 	UIMG, _ := os.Open("UIMG.png")
+// 	UIMG2, _ := os.Open("UIMG.png")
+// 	UIMG3, _ := os.Open("UIMG.png")
+// 	defer UIMG.Close()
+// 	defer UIMG2.Close()
+// 	defer UIMG3.Close()
 
-	// img := LevelUpTemplating(LevelUpInput{
-	// 	UserName:        "TIMG",
-	// 	Pfp:             UIMG,
-	// 	costumeFontPath: "fonts/SourceSansPro-Bold.ttf",
-	// 	Level:           1,
-	// 	shiny:           false,
-	// })
+// 	// img := LevelUpTemplating(LevelUpInput{
+// 	// 	UserName:        "TIMG",
+// 	// 	Pfp:             UIMG,
+// 	// 	costumeFontPath: "fonts/SourceSansPro-Bold.ttf",
+// 	// 	Level:           1,
+// 	// 	shiny:           false,
+// 	// })
 
-	k, _ := os.Open("k.jpg")
-	img := LevelyTemplating(LevelyInput{
-		UserName:          "MyUSERNAME#0001",
-		MemberSince:       "1/1/19",
-		Pfp:               UIMG,
-		costumeFontPath:   "fonts/SourceSansPro-Bold.ttf",
-		costumeBackground: k,
-		Multiplier:        420,
-		Messages:          600,
-		VoicesMinutes:     400,
-		XP:                500,
-		MaxXP:             14000,
-		TextXP:            999999999,
-		VoiceXP:           999999999,
-		Level:             9009,
-	})
+// 	k, _ := os.Open("k.jpg")
+// 	img := LevelyTemplating(LevelyInput{
+// 		UserName:          "MyUSERNAME#0001",
+// 		MemberSince:       "1/1/19",
+// 		Pfp:               UIMG,
+// 		costumeFontPath:   "fonts/SourceSansPro-Bold.ttf",
+// 		costumeBackground: k,
+// 		Multiplier:        420,
+// 		Messages:          600,
+// 		VoicesMinutes:     400,
+// 		XP:                500,
+// 		MaxXP:             14000,
+// 		TextXP:            999999999,
+// 		VoiceXP:           999999999,
+// 		Level:             9009,
+// 	})
 
-	// img := LeaderBoardTemplating(LeaderBoardInput{
-	// 	FirstPlace: UserInput{
-	// 		UserName: "FIRSTPLACE#0001",
-	// 		Pfp:      UIMG,
-	// 		Level:    1000,
-	// 		XP:       14000,
-	// 	},
+// 	// img := LeaderBoardTemplating(LeaderBoardInput{
+// 	// 	FirstPlace: UserInput{
+// 	// 		UserName: "FIRSTPLACE#0001",
+// 	// 		Pfp:      UIMG,
+// 	// 		Level:    1000,
+// 	// 		XP:       14000,
+// 	// 	},
 
-	// 	SecondPlace: UserInput{
-	// 		UserName: "SECONDPLACE#0002",
-	// 		Pfp:      UIMG2,
-	// 		Level:    1,
-	// 		XP:       14000,
-	// 	},
+// 	// 	SecondPlace: UserInput{
+// 	// 		UserName: "SECONDPLACE#0002",
+// 	// 		Pfp:      UIMG2,
+// 	// 		Level:    1,
+// 	// 		XP:       14000,
+// 	// 	},
 
-	// 	ThirdPlace: UserInput{
-	// 		UserName: "THRIDPLACE#0003",
-	// 		Pfp:      UIMG3,
-	// 		Level:    1,
-	// 		XP:       1,
-	// 	},
+// 	// 	ThirdPlace: UserInput{
+// 	// 		UserName: "THRIDPLACE#0003",
+// 	// 		Pfp:      UIMG3,
+// 	// 		Level:    1,
+// 	// 		XP:       1,
+// 	// 	},
 
-	// 	shiny: false,
+// 	// 	shiny: false,
 
-	// 	costumeFontPath: "fonts/SourceSansPro-Bold.ttf",
-	// })
+// 	// 	costumeFontPath: "fonts/SourceSansPro-Bold.ttf",
+// 	// })
 
-	// save img in png format
-	f, _ := os.Create("output.png")
-	defer f.Close()
-	jpeg.Encode(f, img, nil)
-}
+// 	// save img in png format
+// 	f, _ := os.Create("output.png")
+// 	defer f.Close()
+// 	jpeg.Encode(f, img, nil)
+// }
 
 func LevelUpTemplating(input LevelUpInput) image.Image {
 	levelUpTMPL, err := os.Open("templates/levelUp.png")
@@ -209,7 +207,6 @@ func LevelUpTemplating(input LevelUpInput) image.Image {
 }
 
 func LevelyTemplating(myInput LevelyInput) image.Image {
-
 	// stock template image
 	levelyTMPL, err := os.Open("templates/levely.png")
 	// levelyBCK, err := os.Open("templates/levelyback.svg")
@@ -462,25 +459,25 @@ func drawLeaderBoardProfile(dc *gg.Context, user UserInput, x, y int, size uint,
 	createTextBox(dc, "XP", secondaryColorHex, float64(x+140), k)
 }
 
-func drawPfp(dc *gg.Context, pfpSrc image.Image, x, y int, size uint, circleSrc image.Image) {
-	pfpSrc = Circle(resize.Resize(size, size, pfpSrc, resize.Lanczos3))
-	dc.DrawImage(pfpSrc, x, y)
+// func drawPfp(dc *gg.Context, pfpSrc image.Image, x, y int, size uint, circleSrc image.Image) {
+// 	pfpSrc = Circle(resize.Resize(size, size, pfpSrc, resize.Lanczos3))
+// 	dc.DrawImage(pfpSrc, x, y)
 
-	if circleSrc != nil {
-		// circleSrc = resize.Resize(size+4, size+4, circleSrc, resize.Lanczos3)
-		// dc.DrawImage(circleSrc, x-2, y-2)
+// 	if circleSrc != nil {
+// 		// circleSrc = resize.Resize(size+4, size+4, circleSrc, resize.Lanczos3)
+// 		// dc.DrawImage(circleSrc, x-2, y-2)
 
-		// draw a circle with a stroke
-		dc.SetHexColor(primaryColorHex)
-		dc.SetLineWidth(12)
-		dc.SetLineCap(gg.LineCapRound)
-		dc.SetLineJoin(gg.LineJoinRound)
-		dc.DrawCircle(float64(x+20+int(size))/2, float64(y+15+int(size))/2, float64(int(size))/2)
+// 		// draw a circle with a stroke
+// 		dc.SetHexColor(primaryColorHex)
+// 		dc.SetLineWidth(12)
+// 		dc.SetLineCap(gg.LineCapRound)
+// 		dc.SetLineJoin(gg.LineJoinRound)
+// 		dc.DrawCircle(float64(x+20+int(size))/2, float64(y+15+int(size))/2, float64(int(size))/2)
 
-		dc.Stroke()
+// 		dc.Stroke()
 
-	}
-}
+// 	}
+// }
 
 /*Loads the given font and size to dc, to be used onward*/
 func useFont(dc *gg.Context, fontPath string, fontSize float64) {
@@ -512,68 +509,4 @@ func pngEncodeBytes(k image.Image) []byte {
 		fmt.Println("unable to encode image.", err)
 	}
 	return buf.Bytes()
-}
-
-type circle struct {
-	centerPoint image.Point
-	radius      int
-}
-
-func (c *circle) ColorModel() color.Model {
-	return color.AlphaModel
-}
-
-func (c *circle) Bounds() image.Rectangle {
-	return image.Rect(
-		c.centerPoint.X-c.radius,
-		c.centerPoint.Y-c.radius,
-		c.centerPoint.X+c.radius,
-		c.centerPoint.Y+c.radius,
-	)
-}
-
-func (c *circle) At(x, y int) color.Color {
-	xpos := float64(x-c.centerPoint.X) + 0.5
-	ypos := float64(y-c.centerPoint.Y) + 0.5
-	radiusSquared := float64(c.radius * c.radius)
-	if xpos*xpos+ypos*ypos < radiusSquared {
-		return color.Alpha{255}
-	}
-	return color.Alpha{0}
-}
-
-func Circle(src image.Image) image.Image {
-	dst := image.NewRGBA(src.Bounds())
-	r := src.Bounds().Dx() / 2
-	p := image.Point{
-		X: src.Bounds().Dx() / 2,
-		Y: src.Bounds().Dy() / 2,
-	}
-	draw.DrawMask(dst, dst.Bounds(), src, image.ZP, &circle{p, r}, image.ZP, draw.Over)
-	return dst
-}
-
-func Formatnum(n int) string {
-	in := strconv.Itoa(n)
-	numOfDigits := len(in)
-	if n < 0 {
-		numOfDigits-- // First character is the - sign (not a digit)
-	}
-	numOfCommas := (numOfDigits - 1) / 3
-
-	out := make([]byte, len(in)+numOfCommas)
-	if n < 0 {
-		in, out[0] = in[1:], '-'
-	}
-
-	for i, j, k := len(in)-1, len(out)-1, 0; ; i, j = i-1, j-1 {
-		out[j] = in[i]
-		if i == 0 {
-			return string(out)
-		}
-		if k++; k == 3 {
-			j, k = j-1, 0
-			out[j] = ','
-		}
-	}
 }
