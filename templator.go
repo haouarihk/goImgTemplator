@@ -96,7 +96,7 @@ type Theme struct {
 	Packs map[string]ThemePack
 }
 
-type Templator struct {
+type Templater struct {
 	Themes map[string]Theme
 }
 
@@ -114,7 +114,7 @@ type XpBar struct {
 	MaxXP int
 }
 
-func (tp *Templator) Render(user []UserInput, options Options) image.Image {
+func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 	thatPack := tp.Themes[options.Theme].Packs[options.Pack]
 
 	tepSrc := thatPack.TemplateSrc
