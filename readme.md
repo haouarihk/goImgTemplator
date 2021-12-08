@@ -11,17 +11,17 @@ theme: is the collection of packs.
 ## How to start using it:
 
 ```go
-templator := Templater{
-		themes: setupThemes(),
+templator := Templator.Templater{
+		Themes: setupThemes(),
 }
 ```
 
 and then you can use the function render:
 
 ```go
-templator.render(
+templator.Render(
 // the users passed in
-[]UserTemplate{{
+[]Templator.UserTemplate{{
     Username:    "username",
     		Tag:         "#0001",
     		Pfp:         UIMGSrc,
@@ -33,16 +33,16 @@ templator.render(
 // the additional options
 
 // is it shiny
-shiny:             false,
+Shiny:             false,
 
 // costume background: image.Image
-costumeBackground: kSrc,
+CostumeBackground: kSrc,
 
 // theme name
-theme:             "default",
+Theme:             "default",
 
 // the pack (ex: levely, leaderboard, etc)
-pack:              "leaderboard",
+Pack:              "leaderboard",
 
 })
 ```
@@ -70,15 +70,17 @@ func setupThemes(){
 	levelUpTemplateShinySrc, _, _ := image.Decode(levelUpTemplateShiny)
 
     // setup a defaultFont
-    defaultFont := EasyLoadFontFace("fonts/SourceSansPro-Bold.ttf")
+    defaultFont := Templator.EasyLoadFontFace("fonts/SourceSansPro-Bold.ttf")
 
     // then you can start making the themes
-    return 	return map[string]Theme{
+    return 	return map[string]Templator.Theme{
 		"default": {
+            // this is the font that every text will be based on, unless, the user specifies a font or you override it.
 			DefaultFontFace:   defaultFont,
 			DefaultFontSize:   20,
+
             // these are the list of packs in this template
-			Packs: map[string]ThemePack{
+			Packs: map[string]Templator.ThemePack{
                 {
                 "levelUp": {
                     // the template image
@@ -91,41 +93,54 @@ func setupThemes(){
 					Scale:            2,
 
 					// this is the template for the user properties, such as his pfp, username, etc
-					UserTemplate: []UserTemplate{
+					UserTemplate: []Templator.UserTemplate{
 						{
-							Pfp: ImageObject{
+							Pfp: Templator.ImageObject{
+
 								// this should be the default pfp
 								Src: nil,
+
 								// location of the pfp
 								X: 129,
 								Y: 162,
+
 								// size of the pfp
 								W: 351,
 								H: 351,
 							},
-							Username: TextObject{
+
+							Username: Templator.TextObject{
 								// this should be the default username
 								Text: "user",
+
 								// text color
 								Color: "#04A8C3",
+
 								// location of the text
 								X: 900,
 								Y: 162,
-								// font settings
+
+								// (optional): it will override the user costume font settings
 								FontFace: defaultFont,
 								FontSize: 72,
+
+                                // centering the text
 								Centered: true,
-								TextAfter: &TextObject{
+
+								TextAfter: &Templator.TextObject{
 									// this should be the default tag
 									Text: "#0001",
 									// text color
 									Color: "#04A8C3",
 									// font settings
+
+                                    // (optional): it will override the user costume font settings
 									FontFace: defaultFont,
 									FontSize: 72,
 								},
 							},
-							Level: TextObject{
+
+							Level: Templator.TextObject{
 								Text:     "LEVEL",
 								Color:    "#04A8C3",
 								X:        1150,
@@ -142,12 +157,15 @@ func setupThemes(){
 						{
 							// this should be the default username
 							Text: "CONGRATULATIONS !",
+
 							// text color
 							Color: "#bbbbbb",
+
 							// location of the text
 							X: 900,
 							Y: 70,
-							// font settings
+
+							// (optional): it will override the user costume font settings
 							FontFace: defaultFont,
 							FontSize: 52,
 							Centered: true,
