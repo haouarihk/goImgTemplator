@@ -126,7 +126,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 
 	// default font
 	defaultFontFace := tp.Themes[options.Theme].DefaultFontFace
-
+	defaultFontSize := tp.Themes[options.Theme].DefaultFontSize
 	// if options.constumeFontFace != nil {
 	// 	defaultFontFace = options.constumeFontFace
 	// }
@@ -151,7 +151,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 
 	// drawing static texts
 	for _, text := range thatPack.Texts {
-		DrawText(dc, &text, defaultFontFace)
+		DrawText(dc, &text, defaultFontFace, defaultFontSize)
 	}
 
 	// ---- draw user properties
@@ -168,7 +168,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 				_username.TextAfter.Text = useri.Tag
 			}
 
-			DrawText(dc, &_username, defaultFontFace)
+			DrawText(dc, &_username, defaultFontFace, defaultFontSize)
 		}
 
 		// draw the pfp
@@ -192,7 +192,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 
 			_XPAndMaxXP.TextAfter.Text += TightyNumbers(useri.MaxXP)
 
-			DrawText(dc, &_XPAndMaxXP, defaultFontFace)
+			DrawText(dc, &_XPAndMaxXP, defaultFontFace, defaultFontSize)
 		}
 
 		// draw XP
@@ -200,7 +200,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_XP := userTemplate.XP
 			_XP.Text = TightyNumbers(useri.XP)
 
-			DrawText(dc, &_XP, defaultFontFace)
+			DrawText(dc, &_XP, defaultFontFace, defaultFontSize)
 		}
 
 		// draw level
@@ -208,7 +208,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_level := userTemplate.Level
 			_level.Text = TightyNumbers(useri.Level)
 
-			DrawText(dc, &_level, defaultFontFace)
+			DrawText(dc, &_level, defaultFontFace, defaultFontSize)
 		}
 
 		// draw MemberSince
@@ -216,7 +216,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_MemberSince := userTemplate.MemberSince
 			_MemberSince.Text = useri.MemberSince
 
-			DrawText(dc, &_MemberSince, defaultFontFace)
+			DrawText(dc, &_MemberSince, defaultFontFace, defaultFontSize)
 		}
 
 		// draw Text XP
@@ -224,7 +224,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_textXP := userTemplate.TextXP
 			_textXP.Text = TightyNumbers(useri.TextXP)
 
-			DrawText(dc, &_textXP, defaultFontFace)
+			DrawText(dc, &_textXP, defaultFontFace, defaultFontSize)
 		}
 
 		// draw VOICE XP
@@ -232,7 +232,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_voiceXP := userTemplate.VoiceXP
 			_voiceXP.Text = TightyNumbers(useri.VoiceXP)
 
-			DrawText(dc, &_voiceXP, defaultFontFace)
+			DrawText(dc, &_voiceXP, defaultFontFace, defaultFontSize)
 		}
 
 		// draw MULTIPLIER
@@ -240,7 +240,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_multiplier := userTemplate.Multiplier
 			_multiplier.Text = TightyNumbers(useri.Multiplier)
 
-			DrawText(dc, &_multiplier, defaultFontFace)
+			DrawText(dc, &_multiplier, defaultFontFace, defaultFontSize)
 		}
 
 		// draw MESSAGES
@@ -248,7 +248,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_messages := userTemplate.Messages
 			_messages.Text = TightyNumbers(useri.Messages)
 
-			DrawText(dc, &_messages, defaultFontFace)
+			DrawText(dc, &_messages, defaultFontFace, defaultFontSize)
 		}
 
 		// draw VOICEMINUTES XP
@@ -256,7 +256,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_voiceMinutes := userTemplate.VoiceMinutes
 			_voiceMinutes.Text = TightyNumbers(useri.VoiceMinutes)
 
-			DrawText(dc, &_voiceMinutes, defaultFontFace)
+			DrawText(dc, &_voiceMinutes, defaultFontFace, defaultFontSize)
 		}
 	}
 
@@ -287,8 +287,8 @@ func DrawLevelBar(dc *gg.Context, val int, x, y, max, maxX, maxY float64) {
 	dc.SetHexColor("#ffffff")
 }
 
-func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font) {
-	DefaultingFontFaceOfTextObject(text, defaultFont)
+func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font, defaultFontSize float64) {
+	DefaultingFontOfTextObject(text, defaultFont, defaultFontSize)
 	fontface := EasyGetFontFace(text.FontFace, text.FontSize)
 	dc.SetFontFace(fontface)
 	w, _ := dc.MeasureString(text.Text)
@@ -298,7 +298,7 @@ func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font) {
 		if text.TextBefore != nil {
 			text.TextBefore.X += text.X - (w / 2)
 			text.TextBefore.Y += text.Y
-			DrawText(dc, text.TextBefore, defaultFont)
+			DrawText(dc, text.TextBefore, defaultFont, defaultFontSize)
 		}
 
 		dc.SetFontFace(fontface)
@@ -309,14 +309,14 @@ func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font) {
 		if text.TextAfter != nil {
 			text.TextAfter.X += text.X + (w / 2)
 			text.TextAfter.Y += text.Y
-			DrawText(dc, text.TextAfter, defaultFont)
+			DrawText(dc, text.TextAfter, defaultFont, defaultFontSize)
 		}
 	} else if text.RightAligned {
 		// draw text before
 		if text.TextBefore != nil {
 			text.TextBefore.X += text.X - w
 			text.TextBefore.Y += text.Y
-			DrawText(dc, text.TextBefore, defaultFont)
+			DrawText(dc, text.TextBefore, defaultFont, defaultFontSize)
 		}
 
 		dc.SetFontFace(fontface)
@@ -327,14 +327,14 @@ func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font) {
 		if text.TextAfter != nil {
 			text.TextAfter.X += text.X
 			text.TextAfter.Y += text.Y
-			DrawText(dc, text.TextAfter, defaultFont)
+			DrawText(dc, text.TextAfter, defaultFont, defaultFontSize)
 		}
 	} else {
 		// draw text before
 		if text.TextBefore != nil {
 			text.TextBefore.X += text.X
 			text.TextBefore.Y += text.Y
-			DrawText(dc, text.TextBefore, defaultFont)
+			DrawText(dc, text.TextBefore, defaultFont, defaultFontSize)
 		}
 
 		dc.SetFontFace(fontface)
@@ -345,7 +345,7 @@ func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font) {
 		if text.TextAfter != nil {
 			text.TextAfter.X += text.X + w
 			text.TextAfter.Y += text.Y
-			DrawText(dc, text.TextAfter, defaultFont)
+			DrawText(dc, text.TextAfter, defaultFont, defaultFontSize)
 		}
 	}
 }

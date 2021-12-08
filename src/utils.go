@@ -137,17 +137,20 @@ func ParseHexColorFast(s string) (c color.RGBA) {
 	return
 }
 
-func DefaultingFontFaceOfTextObject(textObject *TextObject, defaultFontFace *truetype.Font) {
+func DefaultingFontOfTextObject(textObject *TextObject, defaultFontFace *truetype.Font, defaultFontSize float64) {
 	// if it doesn't have a font face
 	if textObject.FontFace == nil {
 		textObject.FontFace = defaultFontFace
 	}
+	if textObject.FontSize == 0 {
+		textObject.FontSize = defaultFontSize
+	}
 
 	if textObject.TextBefore != nil {
-		DefaultingFontFaceOfTextObject(textObject.TextBefore, defaultFontFace)
+		DefaultingFontOfTextObject(textObject.TextBefore, defaultFontFace, defaultFontSize)
 	}
 	if textObject.TextAfter != nil {
-		DefaultingFontFaceOfTextObject(textObject.TextAfter, defaultFontFace)
+		DefaultingFontOfTextObject(textObject.TextAfter, defaultFontFace, defaultFontSize)
 	}
 
 }
