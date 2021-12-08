@@ -1,72 +1,14 @@
 package main
 
 import (
-	"fmt"
 	"image"
-	"image/png"
 	"os"
-	"time"
 
-	Templator "github.com/haouarihk/goImgTemplator"
+	Templator "github.com/haouarihk/goImgTemplator/src"
 )
 
-func main() {
-	UIMG, _ := os.Open("UIMG.png")
-	k, _ := os.Open("k.jpg")
-	defer UIMG.Close()
-
-	UIMGSrc, _, _ := image.Decode(UIMG)
-	kSrc, _, _ := image.Decode(k)
-
-	templator := Templator.Templater{
-		Themes: setupThemes(),
-	}
-
-	start := time.Now()
-
-	img := templator.Render([]Templator.UserInput{{
-		Username:     "USERNAME",
-		Tag:          "#0001",
-		Pfp:          UIMGSrc,
-		Level:        1000000,
-		XP:           60,
-		MaxXP:        100,
-		TextXP:       50000,
-		VoiceXP:      500000,
-		VoiceMinutes: 5000000,
-		Messages:     50000000,
-		Multiplier:   50,
-		MemberSince:  "01/10/01",
-	}, {
-		Username:    "USERNAME",
-		Tag:         "#0002",
-		Pfp:         UIMGSrc,
-		Level:       1,
-		XP:          5000,
-		MemberSince: "01/10/01",
-	}, {
-		Username:    "USERNAME",
-		Tag:         "#0003",
-		Pfp:         UIMGSrc,
-		Level:       1,
-		XP:          5000,
-		MemberSince: "01/10/01",
-	}}, Templator.Options{
-		Shiny:             false,
-		CostumeBackground: kSrc,
-		Theme:             "default",
-		Pack:              "leaderboard",
-	})
-
-	fmt.Println("execultion time:", time.Since(start))
-	// save img
-	f, _ := os.Create("output.png")
-	defer f.Close()
-	png.Encode(f, img)
-}
-
 func setupThemes() map[string]Templator.Theme {
-	defaultFont := EasyLoadFontFace("fonts/SourceSansPro-Bold.ttf")
+	defaultFont := Templator.EasyLoadFontFace("fonts/SourceSansPro-Bold.ttf")
 
 	// levelup page
 	levelUpTemplate, _ := os.Open("templates/levelUp.png")
@@ -98,22 +40,22 @@ func setupThemes() map[string]Templator.Theme {
 	leaderboardTemplateSrc, _, _ := image.Decode(leaderboardTemplate)
 	leaderboardTemplateShinySrc, _, _ := image.Decode(leaderboardTemplateShiny)
 
-	return map[string]Theme{
+	return map[string]Templator.Theme{
 		"default": {
 			PrimaryColorHex:   "#000000",
 			SecondaryColorHex: "#FFFFFF",
 			DefaultFontFace:   defaultFont,
 			DefaultFontSize:   20,
-			Packs: map[string]ThemePack{
+			Packs: map[string]Templator.ThemePack{
 				"levelUp": {
 					TemplateSrc:      levelUpTemplateSrc,
 					TemplateSrcShiny: levelUpTemplateShinySrc,
 					Scale:            2,
 
 					// this is the template for the user properties, such as his pfp, username, etc
-					UserTemplate: []UserTemplate{
+					UserTemplate: []Templator.UserTemplate{
 						{
-							Pfp: ImageObject{
+							Pfp: Templator.ImageObject{
 								// this should be the default pfp
 								Src: nil,
 								// location of the pfp
@@ -123,7 +65,7 @@ func setupThemes() map[string]Templator.Theme {
 								W: 351,
 								H: 351,
 							},
-							Username: TextObject{
+							Username: Templator.TextObject{
 								// this should be the default username
 								Text: "user",
 								// text color
@@ -135,7 +77,7 @@ func setupThemes() map[string]Templator.Theme {
 								FontFace: defaultFont,
 								FontSize: 72,
 								Centered: true,
-								TextAfter: &TextObject{
+								TextAfter: &Templator.TextObject{
 									// this should be the default tag
 									Text: "#0001",
 									// text color
@@ -145,7 +87,7 @@ func setupThemes() map[string]Templator.Theme {
 									FontSize: 72,
 								},
 							},
-							Level: TextObject{
+							Level: Templator.TextObject{
 								Text:     "LEVEL",
 								Color:    "#04A8C3",
 								X:        1150,
@@ -158,7 +100,7 @@ func setupThemes() map[string]Templator.Theme {
 					},
 
 					// all of these texts are staticaly
-					Texts: []TextObject{
+					Texts: []Templator.TextObject{
 						{
 							// this should be the default username
 							Text: "CONGRATULATIONS !",
@@ -196,9 +138,9 @@ func setupThemes() map[string]Templator.Theme {
 					TemplateSrc:      levelyTemplateSrc,
 					TemplateSrcShiny: levelyTemplateShinySrc,
 					Scale:            1,
-					UserTemplate: []UserTemplate{
+					UserTemplate: []Templator.UserTemplate{
 						{
-							Pfp: ImageObject{
+							Pfp: Templator.ImageObject{
 								// this should be the default pfp
 								Src: nil,
 								// location of the pfp
@@ -208,7 +150,7 @@ func setupThemes() map[string]Templator.Theme {
 								W: 516,
 								H: 516,
 							},
-							Username: TextObject{
+							Username: Templator.TextObject{
 								// this should be the default username
 								Text: "USERNAME#0001",
 								// text color
@@ -219,7 +161,7 @@ func setupThemes() map[string]Templator.Theme {
 								// font settings
 								FontSize: 79,
 								Centered: true,
-								TextAfter: &TextObject{
+								TextAfter: &Templator.TextObject{
 									// this should be the default tag
 									Text: "#0001",
 									// text color
@@ -228,7 +170,7 @@ func setupThemes() map[string]Templator.Theme {
 									FontSize: 79,
 								},
 							},
-							MemberSince: TextObject{
+							MemberSince: Templator.TextObject{
 								Text:     "111",
 								Color:    "#04A8C3",
 								X:        1300,
@@ -236,14 +178,14 @@ func setupThemes() map[string]Templator.Theme {
 								FontSize: 66,
 								Centered: true,
 							},
-							Level: TextObject{
+							Level: Templator.TextObject{
 								Text:     "111",
 								Color:    "#04A8C3",
 								X:        1300,
 								Y:        620,
 								FontSize: 92,
 								Centered: true,
-								TextBefore: &TextObject{
+								TextBefore: &Templator.TextObject{
 									Text:  "Level",
 									Color: "#BBBBBB",
 
@@ -254,13 +196,13 @@ func setupThemes() map[string]Templator.Theme {
 									RightAligned: true,
 								},
 							},
-							XPAndMaxXP: TextObject{
+							XPAndMaxXP: Templator.TextObject{
 								Text:     "111",
 								Color:    "#04A8C3",
 								X:        100,
 								Y:        620,
 								FontSize: 92,
-								TextAfter: &TextObject{
+								TextAfter: &Templator.TextObject{
 									// i thought differently on this one
 									// whatever you type here, will be between the two texts
 									Text: "/",
@@ -269,7 +211,7 @@ func setupThemes() map[string]Templator.Theme {
 									X:        10,
 									Y:        10,
 									FontSize: 64,
-									TextAfter: &TextObject{
+									TextAfter: &Templator.TextObject{
 										Text:     "XP",
 										Color:    "#04A8C3",
 										X:        10,
@@ -278,7 +220,7 @@ func setupThemes() map[string]Templator.Theme {
 									},
 								},
 							},
-							XpBar: XpBar{
+							XpBar: Templator.XpBar{
 								X:          90,
 								Y:          688.8,
 								Width:      1397,
@@ -286,7 +228,7 @@ func setupThemes() map[string]Templator.Theme {
 								Roundyness: 30,
 								Color:      "#04A8C3",
 							},
-							TextXP: TextObject{
+							TextXP: Templator.TextObject{
 								Text:     "2",
 								Color:    "#04A8C3",
 								X:        1780,
@@ -294,7 +236,7 @@ func setupThemes() map[string]Templator.Theme {
 								FontSize: 72,
 								Centered: true,
 							},
-							VoiceXP: TextObject{
+							VoiceXP: Templator.TextObject{
 								Text:     "2",
 								Color:    "#04A8C3",
 								X:        1780,
@@ -302,14 +244,14 @@ func setupThemes() map[string]Templator.Theme {
 								FontSize: 72,
 								Centered: true,
 							},
-							Multiplier: TextObject{
+							Multiplier: Templator.TextObject{
 								Text:         "2",
 								Color:        "#04A8C3",
 								X:            2110,
 								Y:            720,
 								FontSize:     76,
 								RightAligned: true,
-								TextAfter: &TextObject{
+								TextAfter: &Templator.TextObject{
 									Text:     "X",
 									Color:    "#04A8C3",
 									X:        10,
@@ -317,7 +259,7 @@ func setupThemes() map[string]Templator.Theme {
 									FontSize: 64,
 								},
 							},
-							Messages: TextObject{
+							Messages: Templator.TextObject{
 								Text:     "2",
 								Color:    "#04A8C3",
 								X:        2096,
@@ -325,7 +267,7 @@ func setupThemes() map[string]Templator.Theme {
 								FontSize: 62,
 								Centered: true,
 							},
-							VoiceMinutes: TextObject{
+							VoiceMinutes: Templator.TextObject{
 								Text:     "2",
 								Color:    "#04A8C3",
 								X:        2096,
@@ -337,7 +279,7 @@ func setupThemes() map[string]Templator.Theme {
 					},
 
 					// all of these texts are staticaly
-					Texts: []TextObject{
+					Texts: []Templator.TextObject{
 						{
 							Text: "TEXT XP",
 							// text color
@@ -399,9 +341,9 @@ func setupThemes() map[string]Templator.Theme {
 					TemplateSrc:      leaderboardTemplateSrc,
 					TemplateSrcShiny: leaderboardTemplateShinySrc,
 					// this is the template for the user properties, such as his pfp, username, etc
-					UserTemplate: []UserTemplate{
+					UserTemplate: []Templator.UserTemplate{
 						{
-							Pfp: ImageObject{
+							Pfp: Templator.ImageObject{
 								// this should be the default pfp
 								Src: nil,
 								// location of the pfp
@@ -412,7 +354,7 @@ func setupThemes() map[string]Templator.Theme {
 								H:        255,
 								Centered: true,
 							},
-							Username: TextObject{
+							Username: Templator.TextObject{
 								// this should be the default username
 								Text: "USERNAME#0001",
 								// text color
@@ -423,7 +365,7 @@ func setupThemes() map[string]Templator.Theme {
 								// font settings
 								FontSize: 46,
 								Centered: true,
-								TextAfter: &TextObject{
+								TextAfter: &Templator.TextObject{
 									// this should be the default tag
 									Text: "#0001",
 									// text color
@@ -433,14 +375,14 @@ func setupThemes() map[string]Templator.Theme {
 									FontSize: 28,
 								},
 							},
-							Level: TextObject{
+							Level: Templator.TextObject{
 								Text:         "111",
 								Color:        "#04A8C3",
 								X:            675,
 								Y:            360,
 								FontSize:     36,
 								RightAligned: true,
-								TextBefore: &TextObject{
+								TextBefore: &Templator.TextObject{
 									Text:         "Level",
 									Color:        "#bbbbbb",
 									X:            -10,
@@ -449,13 +391,13 @@ func setupThemes() map[string]Templator.Theme {
 									RightAligned: true,
 								},
 							},
-							XP: TextObject{
+							XP: Templator.TextObject{
 								Text:     "2",
 								Color:    "#04A8C3",
 								X:        750,
 								Y:        360,
 								FontSize: 36,
-								TextBefore: &TextObject{
+								TextBefore: &Templator.TextObject{
 									Text:         "XP",
 									Color:        "#bbbbbb",
 									X:            -10,
@@ -466,7 +408,7 @@ func setupThemes() map[string]Templator.Theme {
 							},
 						},
 						{
-							Pfp: ImageObject{
+							Pfp: Templator.ImageObject{
 								// this should be the default pfp
 								Src: nil,
 								// location of the pfp
@@ -477,7 +419,7 @@ func setupThemes() map[string]Templator.Theme {
 								H:        255,
 								Centered: true,
 							},
-							Username: TextObject{
+							Username: Templator.TextObject{
 								// this should be the default username
 								Text: "USERNAME#0001",
 								// text color
@@ -488,7 +430,7 @@ func setupThemes() map[string]Templator.Theme {
 								// font settings
 								FontSize: 46,
 								Centered: true,
-								TextAfter: &TextObject{
+								TextAfter: &Templator.TextObject{
 									// this should be the default tag
 									Text: "#0001",
 									// text color
@@ -498,14 +440,14 @@ func setupThemes() map[string]Templator.Theme {
 									FontSize: 28,
 								},
 							},
-							Level: TextObject{
+							Level: Templator.TextObject{
 								Text:         "111",
 								Color:        "#04A8C3",
 								X:            272,
 								Y:            470,
 								FontSize:     36,
 								RightAligned: true,
-								TextBefore: &TextObject{
+								TextBefore: &Templator.TextObject{
 									Text:         "Level",
 									Color:        "#bbbbbb",
 									X:            -10,
@@ -514,13 +456,13 @@ func setupThemes() map[string]Templator.Theme {
 									RightAligned: true,
 								},
 							},
-							XP: TextObject{
+							XP: Templator.TextObject{
 								Text:     "2",
 								Color:    "#04A8C3",
 								X:        350,
 								Y:        470,
 								FontSize: 36,
-								TextBefore: &TextObject{
+								TextBefore: &Templator.TextObject{
 									Text:         "XP",
 									Color:        "#bbbbbb",
 									X:            -10,
@@ -531,7 +473,7 @@ func setupThemes() map[string]Templator.Theme {
 							},
 						},
 						{
-							Pfp: ImageObject{
+							Pfp: Templator.ImageObject{
 								// this should be the default pfp
 								Src: nil,
 								// location of the pfp
@@ -542,7 +484,7 @@ func setupThemes() map[string]Templator.Theme {
 								H:        250,
 								Centered: true,
 							},
-							Username: TextObject{
+							Username: Templator.TextObject{
 								// this should be the default username
 								Text: "USERNAME#0001",
 								// text color
@@ -553,7 +495,7 @@ func setupThemes() map[string]Templator.Theme {
 								// font settings
 								FontSize: 46,
 								Centered: true,
-								TextAfter: &TextObject{
+								TextAfter: &Templator.TextObject{
 									// this should be the default tag
 									Text: "#0001",
 									// text color
@@ -563,14 +505,14 @@ func setupThemes() map[string]Templator.Theme {
 									FontSize: 28,
 								},
 							},
-							Level: TextObject{
+							Level: Templator.TextObject{
 								Text:         "111",
 								Color:        "#04A8C3",
 								X:            1074,
 								Y:            550,
 								FontSize:     36,
 								RightAligned: true,
-								TextBefore: &TextObject{
+								TextBefore: &Templator.TextObject{
 									Text:         "Level",
 									Color:        "#bbbbbb",
 									X:            -10,
@@ -579,14 +521,14 @@ func setupThemes() map[string]Templator.Theme {
 									RightAligned: true,
 								},
 							},
-							XP: TextObject{
+							XP: Templator.TextObject{
 								Text:     "2",
 								Color:    "#04A8C3",
 								X:        1140,
 								Y:        550,
 								FontFace: defaultFont,
 								FontSize: 36,
-								TextBefore: &TextObject{
+								TextBefore: &Templator.TextObject{
 									Text:         "XP",
 									Color:        "#bbbbbb",
 									X:            -10,
@@ -600,7 +542,7 @@ func setupThemes() map[string]Templator.Theme {
 
 					// key words for the text: username, level, xp
 					// any other text will not be dynamically changed
-					Texts: []TextObject{
+					Texts: []Templator.TextObject{
 						{
 							Text: "MONTH",
 							// text color
@@ -610,7 +552,7 @@ func setupThemes() map[string]Templator.Theme {
 							Y: 55,
 							// font settings
 							FontSize: 52,
-							TextAfter: &TextObject{
+							TextAfter: &Templator.TextObject{
 								Text: "LY",
 								// text color
 								Color: "#04A8C3",
