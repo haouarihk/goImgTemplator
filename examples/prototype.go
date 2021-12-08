@@ -6,6 +6,8 @@ import (
 	"image/png"
 	"os"
 	"time"
+
+	Templator "github.com/haouarihk/goImgTemplator"
 )
 
 func main() {
@@ -16,13 +18,13 @@ func main() {
 	UIMGSrc, _, _ := image.Decode(UIMG)
 	kSrc, _, _ := image.Decode(k)
 
-	templator := Templater{
-		themes: setupThemes(),
+	templator := Templator.Templator{
+		Themes: setupThemes(),
 	}
 
 	start := time.Now()
 
-	img := templator.render([]UserInput{{
+	img := templator.Render([]Templator.UserInput{{
 		Username:     "USERNAME",
 		Tag:          "#0001",
 		Pfp:          UIMGSrc,
@@ -49,11 +51,11 @@ func main() {
 		Level:       1,
 		XP:          5000,
 		MemberSince: "01/10/01",
-	}}, Options{
-		shiny:             false,
-		costumeBackground: kSrc,
-		theme:             "default",
-		pack:              "leaderboard",
+	}}, Templator.Options{
+		Shiny:             false,
+		CostumeBackground: kSrc,
+		Theme:             "default",
+		Pack:              "leaderboard",
 	})
 
 	fmt.Println("execultion time:", time.Since(start))
@@ -63,8 +65,8 @@ func main() {
 	png.Encode(f, img)
 }
 
-func setupThemes() map[string]Theme {
-	defaultFont := easyLoadFontFace("fonts/SourceSansPro-Bold.ttf")
+func setupThemes() map[string]Templator.Theme {
+	defaultFont := EasyLoadFontFace("fonts/SourceSansPro-Bold.ttf")
 
 	// levelup page
 	levelUpTemplate, _ := os.Open("templates/levelUp.png")

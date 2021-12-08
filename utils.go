@@ -75,7 +75,7 @@ func Formatnum(n int) string {
 	}
 }
 
-func tightyNumbers(n int) string {
+func TightyNumbers(n int) string {
 	if n < 100000 {
 		return Formatnum(n)
 	} else if n < 1000000 {
@@ -86,7 +86,7 @@ func tightyNumbers(n int) string {
 	return Formatnum(n/1000000000) + "B"
 }
 
-func easyLoadFontFace(fontPath string) (font *truetype.Font) {
+func EasyLoadFontFace(fontPath string) (font *truetype.Font) {
 	fontBytes, err := ioutil.ReadFile(fontPath)
 	if err != nil {
 		panic(err)
@@ -98,7 +98,7 @@ func easyLoadFontFace(fontPath string) (font *truetype.Font) {
 	return f
 }
 
-func easyGetFontFace(font *truetype.Font, size float64) (fontFace font.Face) {
+func EasyGetFontFace(font *truetype.Font, size float64) (fontFace font.Face) {
 	return truetype.NewFace(font, &truetype.Options{
 		Size: size,
 		DPI:  72,

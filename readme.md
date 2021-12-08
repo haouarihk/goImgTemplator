@@ -70,7 +70,7 @@ func setupThemes(){
 	levelUpTemplateShinySrc, _, _ := image.Decode(levelUpTemplateShiny)
 
     // setup a defaultFont
-    defaultFont := easyLoadFontFace("fonts/SourceSansPro-Bold.ttf")
+    defaultFont := EasyLoadFontFace("fonts/SourceSansPro-Bold.ttf")
 
     // then you can start making the themes
     return 	return map[string]Theme{
