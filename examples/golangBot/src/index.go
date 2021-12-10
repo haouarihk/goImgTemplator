@@ -19,9 +19,7 @@ func main() {
 	UIMGSrc, _, _ := image.Decode(UIMG)
 	kSrc, _, _ := image.Decode(k)
 
-	templator := Templator.Templater{
-		Themes: setupThemes(),
-	}
+	templator := Templator.Init(setupThemes())
 
 	start := time.Now()
 

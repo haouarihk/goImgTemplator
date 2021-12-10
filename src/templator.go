@@ -8,110 +8,10 @@ import (
 	"github.com/nfnt/resize"
 )
 
-type ImageObject struct {
-	Src          image.Image
-	X, Y         int
-	W, H         uint
-	Centered     bool
-	RightAligned bool
-}
-
-type TextObject struct {
-	Text             string
-	Color            string
-	X, Y             float64
-	FontFace         *truetype.Font
-	FontSize         float64
-	hiddenAddedText  string
-	hiddenSubbedText string
-	Centered         bool
-	RightAligned     bool
-	TextAfter        *TextObject
-	TextBefore       *TextObject
-}
-
-type UserTemplate struct {
-	Pfp          ImageObject
-	Username     TextObject
-	Level        TextObject
-	XP           TextObject
-	XPAndMaxXP   TextObject
-	XpBar        XpBar
-	MaxXp        TextObject
-	MemberSince  TextObject
-	TextXP       TextObject
-	VoiceXP      TextObject
-	Multiplier   TextObject
-	Messages     TextObject
-	VoiceMinutes TextObject
-}
-
-type UserInput struct {
-	Username     string
-	Tag          string
-	Pfp          image.Image
-	Level        int
-	XP           int
-	MaxXP        int
-	MemberSince  string
-	TextXP       int
-	VoiceXP      int
-	Multiplier   int
-	Messages     int
-	VoiceMinutes int
-}
-
-type Options struct {
-	Shiny             bool
-	CostumeBackground image.Image
-	ConstumeFontFace  *truetype.Font
-	Theme             string
-	Pack              string
-}
-
-type ThemePack struct {
-	TemplateSrc      image.Image
-	TemplateSrcShiny image.Image
-	Scale            int
-	Texts            []TextObject
-	images           []ImageObject
-	UserTemplate     []UserTemplate
-}
-
-type Theme struct {
-	// colors in hex
-	PrimaryColorHex   string
-	SecondaryColorHex string
-
-	// default font path
-	DefaultFontFace *truetype.Font
-	DefaultFontSize float64
-
-	// fornt sizes
-	bigFontSize    float64
-	mediumFontSize float64
-	smallFontSize  float64
-
-	// Packs
-	Packs map[string]ThemePack
-}
-
-type Templater struct {
-	Themes map[string]Theme
-}
-
-type XpBar struct {
-	X          float64
-	Y          float64
-	Width      float64
-	Height     float64
-	Roundyness float64
-	Color      string
-	hideText   bool
-
-	// optional default values
-	XP    int
-	MaxXP int
+func Init(themes map[string]Theme) Templater {
+	return Templater{
+		Themes: themes,
+	}
 }
 
 func (tp *Templater) Render(user []UserInput, options Options) image.Image {
@@ -165,7 +65,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_username.Text = useri.Username
 
 			if userTemplate.Username != emptyTextBox {
-				_username.TextAfter.Text = useri.Tag
+				_username.TextAfter.Text += useri.Tag
 			}
 
 			DrawText(dc, &_username, defaultFontFace, defaultFontSize)

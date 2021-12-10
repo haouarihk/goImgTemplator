@@ -10,10 +10,28 @@ theme: is the collection of packs.
 
 ## How to start using it:
 
+first of all, you need to install it, using:
+
+```bash
+go get github.com/haouarihk/goImgTemplator/src
+```
+
+and then you import it:
+
 ```go
-templator := Templator.Templater{
-		Themes: setupThemes(),
-}
+import ( 
+    //...
+    Templator "github.com/haouarihk/goImgTemplator/src"
+    //...
+)
+```
+
+
+then you can initialize it, it's a class after all
+
+
+```go
+templator := Templator.Init(setupThemes())
 ```
 
 and then you can use the function render:
