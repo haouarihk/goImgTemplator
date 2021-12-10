@@ -177,14 +177,10 @@ func DrawXpBar(dc *gg.Context, xpBar XpBar) {
 		leni := xpBar.Width * pers
 
 		dc.SetHexColor(xpBar.Color)
-		dc.SetFillStyle(gg.NewSolidPattern(ParseHexColorFast(xpBar.Color)))
+		dc.SetFillStyle(gg.NewSolidPattern(ConvertToHex(xpBar.Color)))
 		dc.DrawRoundedRectangle(xpBar.X, xpBar.Y, leni+14, xpBar.Height, xpBar.Roundyness)
 		dc.Fill()
 	}
-}
-
-func DrawLevelBar(dc *gg.Context, val int, x, y, max, maxX, maxY float64) {
-	dc.SetHexColor("#ffffff")
 }
 
 func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font, defaultFontSize float64) {

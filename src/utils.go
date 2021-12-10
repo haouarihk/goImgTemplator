@@ -50,6 +50,7 @@ func Circle(src image.Image) image.Image {
 	return dst
 }
 
+/* Format number to be in shape of 123,123*/
 func Formatnum(n int) string {
 	in := strconv.Itoa(n)
 	numOfDigits := len(in)
@@ -75,6 +76,7 @@ func Formatnum(n int) string {
 	}
 }
 
+/* Format number to be in shape of 99,999 or 100k*/
 func TightyNumbers(n int) string {
 	if n < 100000 {
 		return Formatnum(n)
@@ -86,6 +88,19 @@ func TightyNumbers(n int) string {
 	return Formatnum(n/1000000000) + "B"
 }
 
+/* Easy way to load a font face, it doens't return an error if the font doesn't exist or doesn't work. Make sure that the font works. And if you're not sure about it
+use ``go
+	fontBytes, err := ioutil.ReadFile(fontPath)
+	if err != nil {
+		panic(err)
+	}
+	fontFace, err := truetype.Parse(fontBytes)
+	if err != nil {
+		panic(err)
+	}
+``
+to load the font
+*/
 func EasyLoadFontFace(fontPath string) (font *truetype.Font) {
 	fontBytes, err := ioutil.ReadFile(fontPath)
 	if err != nil {
@@ -98,6 +113,7 @@ func EasyLoadFontFace(fontPath string) (font *truetype.Font) {
 	return f
 }
 
+/* An Easy way to change the font size and get font.Face out of Truetype.Font*/
 func EasyGetFontFace(font *truetype.Font, size float64) (fontFace font.Face) {
 	return truetype.NewFace(font, &truetype.Options{
 		Size: size,
@@ -105,7 +121,8 @@ func EasyGetFontFace(font *truetype.Font, size float64) (fontFace font.Face) {
 	})
 }
 
-func ParseHexColorFast(s string) (c color.RGBA) {
+/* Converts Color to Hex */
+func ConvertToHex(s string) (c color.RGBA) {
 	c.A = 0xff
 
 	if s[0] != '#' {
@@ -137,6 +154,7 @@ func ParseHexColorFast(s string) (c color.RGBA) {
 	return
 }
 
+/* You give it a text and it will default it to the parent's font, if it doesn't have a font (it's used in the engine) */
 func DefaultingFontOfTextObject(textObject *TextObject, defaultFontFace *truetype.Font, defaultFontSize float64) {
 	// if it doesn't have a font face
 	if textObject.FontFace == nil {
