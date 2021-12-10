@@ -24,8 +24,7 @@ func main() {
 	start := time.Now()
 
 	img := templator.Render([]Templator.UserInput{{
-		Username:     "USERNAME",
-		Tag:          "#0001",
+		FullUsername: "USERNAME#0001",
 		Pfp:          UIMGSrc,
 		Level:        1000000,
 		XP:           60,
@@ -37,19 +36,17 @@ func main() {
 		Multiplier:   50,
 		MemberSince:  "01/10/01",
 	}, {
-		Username:    "USERNAME",
-		Tag:         "#0002",
-		Pfp:         UIMGSrc,
-		Level:       1,
-		XP:          5000,
-		MemberSince: "01/10/01",
+		FullUsername: "USERNAME#0002",
+		Pfp:          UIMGSrc,
+		Level:        1,
+		XP:           5000,
+		MemberSince:  "01/10/01",
 	}, {
-		Username:    "USERNAME",
-		Tag:         "#0003",
-		Pfp:         UIMGSrc,
-		Level:       1,
-		XP:          5000,
-		MemberSince: "01/10/01",
+		FullUsername: "USERNAME#0003",
+		Pfp:          UIMGSrc,
+		Level:        1,
+		XP:           5000,
+		MemberSince:  "01/10/01",
 	}}, Templator.Options{
 		Shiny:             false,
 		CostumeBackground: kSrc,
