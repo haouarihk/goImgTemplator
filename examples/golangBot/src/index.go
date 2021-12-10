@@ -13,7 +13,7 @@ import (
 func main() {
 	fmt.Println("Hello, world!")
 	UIMG, _ := os.Open("imgs/UIMG.png")
-	k, _ := os.Open("k.jpg")
+	k, _ := os.Open("imgs/k.jpg")
 	defer UIMG.Close()
 
 	UIMGSrc, _, _ := image.Decode(UIMG)

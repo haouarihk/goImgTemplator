@@ -6,6 +6,8 @@ github.com/haouarihk/goImgTemplator v0.0.0-20211208155348-7f29c4447e5e h1:5F+BzV
 github.com/haouarihk/goImgTemplator v0.0.0-20211208155348-7f29c4447e5e/go.mod h1:kBf9tgVb9sQctBAc9RmbObl/+gEhmxpB+ubb4WO7WNU=
 github.com/haouarihk/goImgTemplator v0.0.0-20211208170920-afce995f9be7 h1:rma+Z7QM9sm0MouWByvoxTZnp6/i80V8PntJ6ZkynZ4=
 github.com/haouarihk/goImgTemplator v0.0.0-20211208170920-afce995f9be7/go.mod h1:n1l4rfrfHjzgKlFH0OnYNPQyb/1HuMVktEW9GQ5vycI=
+github.com/haouarihk/goImgTemplator v0.0.0-20211208171104-8ce475681532 h1:rcxY1oasvRnBoLBKU9gliGlNJDnWRGk6TEVpVEajEYw=
+github.com/haouarihk/goImgTemplator v0.0.0-20211208171104-8ce475681532/go.mod h1:c9voP3w3IdiN/7nP4WD2bE69l6SWFcBBHHoXE+/cOfI=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646 h1:zYyBkD/k9seD2A7fsi6Oo2LfFZAehjjQMERAvZLEDnQ=
 github.com/nfnt/resize v0.0.0-20180221191011-83c6a9932646/go.mod h1:jpp1/29i3P1S/RLdc7JQKbRpFeM1dOBd8T9ki5s+AY8=
 golang.org/x/image v0.0.0-20211028202545-6944b10bf410 h1:hTftEOvwiOq2+O8k2D5/Q7COC7k5Qcrgc2TFURJYnvQ=
