@@ -175,12 +175,13 @@ func DefaultingFontOfTextObject(textObject *TextObject, defaultFontFace *truetyp
 }
 
 func SeperateUsernameFromTag(fullUsername string) (username string, tag string, err string) {
-	// split the fullUsername with #
-	strs := strings.Split(fullUsername, "#")
 
-	if len(strs) < 3 {
+	if len(fullUsername) < 3 {
 		return "", "", "not a valid username"
 	}
+
+	// split the fullUsername with #
+	strs := strings.Split(fullUsername, "#")
 
 	_tag := strs[len(strs)-1]
 
