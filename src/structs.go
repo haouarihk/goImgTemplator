@@ -58,8 +58,17 @@ type UserTemplate struct {
 	/* Template of: The Profile image of the user */
 	Pfp ImageObject
 
-	/* Template of: The username of the user, the tag gonna be the textAfter, any text in the textafter will be displayed at the begining of textAfter. */
+	/* Template of: The username of the user, (without the tag)  */
 	Username TextObject
+
+	/* Template of: The tag of the user */
+	Tag TextObject
+
+	/* Template of: The username and tag of the user */
+	FullUsername TextObject
+
+	/* Template of: The username and tag being the TextAfter */
+	TagTextAfterUsername TextObject
 
 	/* Template of: The Level of the user */
 	Level TextObject
@@ -73,8 +82,8 @@ type UserTemplate struct {
 	/* Template of: The XP bar */
 	XpBar XpBar
 
-	/* Template of: MaxXp of the user*/
-	MaxXp TextObject
+	/* Template of: MaxXP of the user*/
+	MaxXP TextObject
 
 	/* Template of: The Date on when the user became a member (string)*/
 	MemberSince TextObject
@@ -101,10 +110,7 @@ type UserInput struct {
 	Pfp image.Image
 
 	/* The username of the user */
-	Username string
-
-	/* The tag of the user */
-	Tag string
+	FullUsername string
 
 	/* The Level of the user */
 	Level int

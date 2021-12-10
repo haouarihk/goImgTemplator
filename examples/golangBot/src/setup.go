@@ -42,10 +42,8 @@ func setupThemes() map[string]Templator.Theme {
 
 	return map[string]Templator.Theme{
 		"default": {
-			PrimaryColorHex:   "#000000",
-			SecondaryColorHex: "#FFFFFF",
-			DefaultFontFace:   defaultFont,
-			DefaultFontSize:   20,
+			DefaultFontFace: defaultFont,
+			DefaultFontSize: 20,
 			Packs: map[string]Templator.ThemePack{
 				"levelUp": {
 					TemplateSrc:      levelUpTemplateSrc,
@@ -65,7 +63,7 @@ func setupThemes() map[string]Templator.Theme {
 								W: 351,
 								H: 351,
 							},
-							Username: Templator.TextObject{
+							FullUsername: Templator.TextObject{
 								// this should be the default username
 								Text: "user",
 								// text color
@@ -77,15 +75,6 @@ func setupThemes() map[string]Templator.Theme {
 								FontFace: defaultFont,
 								FontSize: 72,
 								Centered: true,
-								TextAfter: &Templator.TextObject{
-									// this should be the default tag
-									Text: "#0001",
-									// text color
-									Color: "#04A8C3",
-									// font settings
-									FontFace: defaultFont,
-									FontSize: 72,
-								},
 							},
 							Level: Templator.TextObject{
 								Text:     "LEVEL",
@@ -150,7 +139,7 @@ func setupThemes() map[string]Templator.Theme {
 								W: 516,
 								H: 516,
 							},
-							Username: Templator.TextObject{
+							FullUsername: Templator.TextObject{
 								// this should be the default username
 								Text: "USERNAME#0001",
 								// text color
@@ -161,14 +150,6 @@ func setupThemes() map[string]Templator.Theme {
 								// font settings
 								FontSize: 79,
 								Centered: true,
-								TextAfter: &Templator.TextObject{
-									// this should be the default tag
-									Text: "#0001",
-									// text color
-									Color: "#212129",
-									// font settings
-									FontSize: 79,
-								},
 							},
 							MemberSince: Templator.TextObject{
 								Text:     "111",
@@ -354,7 +335,7 @@ func setupThemes() map[string]Templator.Theme {
 								H:        255,
 								Centered: true,
 							},
-							Username: Templator.TextObject{
+							FullUsername: Templator.TextObject{
 								// this should be the default username
 								Text: "USERNAME#0001",
 								// text color
@@ -365,15 +346,6 @@ func setupThemes() map[string]Templator.Theme {
 								// font settings
 								FontSize: 46,
 								Centered: true,
-								TextAfter: &Templator.TextObject{
-									// this should be the default tag
-									Text: "#0001",
-									// text color
-									Color: "#bbbbbb",
-									Y:     10,
-									// font settings
-									FontSize: 28,
-								},
 							},
 							Level: Templator.TextObject{
 								Text:         "111",
@@ -419,7 +391,7 @@ func setupThemes() map[string]Templator.Theme {
 								H:        255,
 								Centered: true,
 							},
-							Username: Templator.TextObject{
+							FullUsername: Templator.TextObject{
 								// this should be the default username
 								Text: "USERNAME#0001",
 								// text color
@@ -430,15 +402,6 @@ func setupThemes() map[string]Templator.Theme {
 								// font settings
 								FontSize: 46,
 								Centered: true,
-								TextAfter: &Templator.TextObject{
-									// this should be the default tag
-									Text: "#0001",
-									// text color
-									Color: "#bbbbbb",
-									Y:     10,
-									// font settings
-									FontSize: 28,
-								},
 							},
 							Level: Templator.TextObject{
 								Text:         "111",
@@ -484,7 +447,7 @@ func setupThemes() map[string]Templator.Theme {
 								H:        250,
 								Centered: true,
 							},
-							Username: Templator.TextObject{
+							FullUsername: Templator.TextObject{
 								// this should be the default username
 								Text: "USERNAME#0001",
 								// text color
@@ -495,15 +458,6 @@ func setupThemes() map[string]Templator.Theme {
 								// font settings
 								FontSize: 46,
 								Centered: true,
-								TextAfter: &Templator.TextObject{
-									// this should be the default tag
-									Text: "#0001",
-									// text color
-									Color: "#bbbbbb",
-									Y:     10,
-									// font settings
-									FontSize: 28,
-								},
 							},
 							Level: Templator.TextObject{
 								Text:         "111",

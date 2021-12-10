@@ -6,6 +6,7 @@ import (
 	"image/draw"
 	"io/ioutil"
 	"strconv"
+	"strings"
 
 	"github.com/golang/freetype/truetype"
 	"golang.org/x/image/font"
@@ -171,4 +172,22 @@ func DefaultingFontOfTextObject(textObject *TextObject, defaultFontFace *truetyp
 		DefaultingFontOfTextObject(textObject.TextAfter, defaultFontFace, defaultFontSize)
 	}
 
+}
+
+func SeperateUsernameFromTag(fullUsername string) (username string, tag string, err string) {
+	// split the fullUsername with #
+	strs := strings.Split(fullUsername, "#")
+
+	if len(strs) < 3 {
+		return "", "", "not a valid username"
+	}
+
+	_tag := strs[len(strs)-1]
+
+	// this remove last element from array
+	if len(strs) > 0 {
+		strs = strs[:len(strs)-1]
+	}
+
+	return strings.Join(strs, ""), _tag, ""
 }

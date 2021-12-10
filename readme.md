@@ -40,8 +40,7 @@ and then you can use the function render:
 templator.Render(
 // the users passed in
 []Templator.UserTemplate{{
-    Username:    "username",
-    		Tag:         "#0001",
+        FullUsername:    "username#0001",
     		Pfp:         UIMGSrc,
     		Level:       1000000,
     		XP:          50000000,
@@ -111,6 +110,7 @@ func setupThemes(){
 					Scale:            2,
 
 					// this is the template for the user properties, such as his pfp, username, etc
+                    // they are all optional, pick what you need to add
 					UserTemplate: []Templator.UserTemplate{
 						{
 							Pfp: Templator.ImageObject{
@@ -126,7 +126,8 @@ func setupThemes(){
 								W: 351,
 								H: 351,
 							},
-
+                            
+                            // this is the user's name without tag
 							Username: Templator.TextObject{
 								// this should be the default username
 								Text: "user",
@@ -144,18 +145,76 @@ func setupThemes(){
 
                                 // centering the text
 								Centered: true,
+							},
 
-								TextAfter: &Templator.TextObject{
+                            // this is the user's tag
+							Tag: Templator.TextObject{
+								// this should be the default username
+								Text: "#0001",
+
+								// text color
+								Color: "#04A8C3",
+
+								// location of the text
+								X: 900,
+								Y: 162,
+
+								// (optional): it will override the user costume font settings
+								FontFace: defaultFont,
+								FontSize: 72,
+
+                                // centering the text
+								Centered: true,
+							},
+
+                            // this is the user's Full Username with tag
+							FullUsername: Templator.TextObject{
+								// this should be the default username
+								Text: "#0001",
+
+								// text color
+								Color: "#04A8C3",
+
+								// location of the text
+								X: 900,
+								Y: 162,
+
+								// (optional): it will override the user costume font settings
+								FontFace: defaultFont,
+								FontSize: 72,
+
+                                // centering the text
+								Centered: true,
+							},
+
+                            // this is the user's name  with tag being the TextAfter
+							TagTextAfterUsername: Templator.TextObject{
+								// this should be the default username
+								Text: "#0001",
+
+								// text color
+								Color: "#04A8C3",
+
+								// location of the text
+								X: 900,
+								Y: 162,
+
+								// (optional): it will override the user costume font settings
+								FontFace: defaultFont,
+								FontSize: 72,
+
+                                TextAfter: &Templator.TextObject{
 									// this should be the default tag
 									Text: "#0001",
 									// text color
 									Color: "#04A8C3",
 									// font settings
-
-                                    // (optional): it will override the user costume font settings
 									FontFace: defaultFont,
 									FontSize: 72,
 								},
+
+                                // centering the text
+								Centered: true,
 							},
 
 							Level: Templator.TextObject{

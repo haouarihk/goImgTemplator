@@ -1,6 +1,7 @@
 package Templator
 
 import (
+	"fmt"
 	"image"
 
 	"github.com/fogleman/gg"
@@ -13,6 +14,8 @@ func Init(themes map[string]Theme) Templater {
 		Themes: themes,
 	}
 }
+
+var emptyTextBox = TextObject{}
 
 func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 	thatPack := tp.Themes[options.Theme].Packs[options.Pack]
@@ -51,30 +54,20 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 
 	// drawing static texts
 	for _, text := range thatPack.Texts {
-		DrawText(dc, &text, defaultFontFace, defaultFontSize)
+		drawText(dc, &text, defaultFontFace, defaultFontSize)
 	}
 
 	// ---- draw user properties
 	for i, userTemplate := range thatPack.UserTemplate {
-		emptyTextBox := TextObject{}
 		useri := user[i]
 
 		// draw username
-		if userTemplate.Username != emptyTextBox {
-			_username := userTemplate.Username
-			_username.Text = useri.Username
-
-			if userTemplate.Username != emptyTextBox {
-				_username.TextAfter.Text += useri.Tag
-			}
-
-			DrawText(dc, &_username, defaultFontFace, defaultFontSize)
-		}
+		drawUsername(dc, userTemplate, useri, defaultFontFace, defaultFontSize)
 
 		// draw the pfp
 		if useri.Pfp != nil {
 			userTemplate.Pfp.Src = Circle(useri.Pfp)
-			DrawImage(dc, &userTemplate.Pfp)
+			drawImage(dc, &userTemplate.Pfp)
 		}
 
 		// draw XP Bar
@@ -82,33 +75,18 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_xpbar := userTemplate.XpBar
 			_xpbar.XP = useri.XP
 			_xpbar.MaxXP = useri.MaxXP
-			DrawXpBar(dc, _xpbar)
+			drawXpBar(dc, _xpbar)
 		}
 
-		// draw XPMaxXP
-		if userTemplate.XPAndMaxXP != emptyTextBox {
-			_XPAndMaxXP := userTemplate.XPAndMaxXP
-			_XPAndMaxXP.Text = TightyNumbers(useri.XP)
-
-			_XPAndMaxXP.TextAfter.Text += TightyNumbers(useri.MaxXP)
-
-			DrawText(dc, &_XPAndMaxXP, defaultFontFace, defaultFontSize)
-		}
-
-		// draw XP
-		if userTemplate.XP != emptyTextBox {
-			_XP := userTemplate.XP
-			_XP.Text = TightyNumbers(useri.XP)
-
-			DrawText(dc, &_XP, defaultFontFace, defaultFontSize)
-		}
+		// draw xp and Max XP
+		drawXPMaxXP(dc, userTemplate, useri, defaultFontFace, defaultFontSize)
 
 		// draw level
 		if userTemplate.Level != emptyTextBox {
 			_level := userTemplate.Level
 			_level.Text = TightyNumbers(useri.Level)
 
-			DrawText(dc, &_level, defaultFontFace, defaultFontSize)
+			drawText(dc, &_level, defaultFontFace, defaultFontSize)
 		}
 
 		// draw MemberSince
@@ -116,7 +94,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_MemberSince := userTemplate.MemberSince
 			_MemberSince.Text = useri.MemberSince
 
-			DrawText(dc, &_MemberSince, defaultFontFace, defaultFontSize)
+			drawText(dc, &_MemberSince, defaultFontFace, defaultFontSize)
 		}
 
 		// draw Text XP
@@ -124,7 +102,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_textXP := userTemplate.TextXP
 			_textXP.Text = TightyNumbers(useri.TextXP)
 
-			DrawText(dc, &_textXP, defaultFontFace, defaultFontSize)
+			drawText(dc, &_textXP, defaultFontFace, defaultFontSize)
 		}
 
 		// draw VOICE XP
@@ -132,7 +110,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_voiceXP := userTemplate.VoiceXP
 			_voiceXP.Text = TightyNumbers(useri.VoiceXP)
 
-			DrawText(dc, &_voiceXP, defaultFontFace, defaultFontSize)
+			drawText(dc, &_voiceXP, defaultFontFace, defaultFontSize)
 		}
 
 		// draw MULTIPLIER
@@ -140,7 +118,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_multiplier := userTemplate.Multiplier
 			_multiplier.Text = TightyNumbers(useri.Multiplier)
 
-			DrawText(dc, &_multiplier, defaultFontFace, defaultFontSize)
+			drawText(dc, &_multiplier, defaultFontFace, defaultFontSize)
 		}
 
 		// draw MESSAGES
@@ -148,7 +126,7 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_messages := userTemplate.Messages
 			_messages.Text = TightyNumbers(useri.Messages)
 
-			DrawText(dc, &_messages, defaultFontFace, defaultFontSize)
+			drawText(dc, &_messages, defaultFontFace, defaultFontSize)
 		}
 
 		// draw VOICEMINUTES XP
@@ -156,14 +134,87 @@ func (tp *Templater) Render(user []UserInput, options Options) image.Image {
 			_voiceMinutes := userTemplate.VoiceMinutes
 			_voiceMinutes.Text = TightyNumbers(useri.VoiceMinutes)
 
-			DrawText(dc, &_voiceMinutes, defaultFontFace, defaultFontSize)
+			drawText(dc, &_voiceMinutes, defaultFontFace, defaultFontSize)
 		}
 	}
 
 	return dc.Image()
 }
 
-func DrawXpBar(dc *gg.Context, xpBar XpBar) {
+func drawUsername(dc *gg.Context, userTemplate UserTemplate, useri UserInput, defaultFontFace *truetype.Font, defaultFontSize float64) {
+	username, tag, err := SeperateUsernameFromTag(useri.FullUsername)
+
+	if err != "" {
+		fmt.Println(err, useri.FullUsername)
+		return
+	}
+
+	// draw fullUsername
+	if userTemplate.FullUsername != emptyTextBox {
+		_username := userTemplate.FullUsername
+		_username.Text = useri.FullUsername
+
+		drawText(dc, &_username, defaultFontFace, defaultFontSize)
+	}
+
+	// draw usernameSeperateFromTag
+	if userTemplate.TagTextAfterUsername != emptyTextBox {
+		_username := userTemplate.TagTextAfterUsername
+		_username.Text = useri.FullUsername
+
+		if userTemplate.TagTextAfterUsername.TextAfter != nil {
+			_username.TextAfter.Text += tag
+		}
+
+		drawText(dc, &_username, defaultFontFace, defaultFontSize)
+	}
+
+	// draw user's tag
+	if userTemplate.Tag != emptyTextBox {
+		_username := userTemplate.Tag
+		_username.Text = tag
+
+		drawText(dc, &_username, defaultFontFace, defaultFontSize)
+	}
+
+	// draw just the username
+	if userTemplate.Username != emptyTextBox {
+		_username := userTemplate.Username
+		_username.Text = username
+
+		drawText(dc, &_username, defaultFontFace, defaultFontSize)
+	}
+}
+
+func drawXPMaxXP(dc *gg.Context, userTemplate UserTemplate, useri UserInput, defaultFontFace *truetype.Font, defaultFontSize float64) {
+	// draw XPMaxXP
+	if userTemplate.XPAndMaxXP != emptyTextBox {
+		_XPAndMaxXP := userTemplate.XPAndMaxXP
+		_XPAndMaxXP.Text = TightyNumbers(useri.XP)
+
+		_XPAndMaxXP.TextAfter.Text += TightyNumbers(useri.MaxXP)
+
+		drawText(dc, &_XPAndMaxXP, defaultFontFace, defaultFontSize)
+	}
+
+	// draw XP
+	if userTemplate.XP != emptyTextBox {
+		_XP := userTemplate.XP
+		_XP.Text = TightyNumbers(useri.XP)
+
+		drawText(dc, &_XP, defaultFontFace, defaultFontSize)
+	}
+
+	// draw Max XP
+	if userTemplate.MaxXP != emptyTextBox {
+		_MaxXP := userTemplate.MaxXP
+		_MaxXP.Text = TightyNumbers(useri.MaxXP)
+
+		drawText(dc, &_MaxXP, defaultFontFace, defaultFontSize)
+	}
+}
+
+func drawXpBar(dc *gg.Context, xpBar XpBar) {
 	pers := float64(xpBar.XP) / float64(xpBar.MaxXP)
 	if pers > 0 {
 		if pers > 1 {
@@ -183,7 +234,7 @@ func DrawXpBar(dc *gg.Context, xpBar XpBar) {
 	}
 }
 
-func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font, defaultFontSize float64) {
+func drawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font, defaultFontSize float64) {
 	DefaultingFontOfTextObject(text, defaultFont, defaultFontSize)
 	fontface := EasyGetFontFace(text.FontFace, text.FontSize)
 	dc.SetFontFace(fontface)
@@ -194,7 +245,7 @@ func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font, defa
 		if text.TextBefore != nil {
 			text.TextBefore.X += text.X - (w / 2)
 			text.TextBefore.Y += text.Y
-			DrawText(dc, text.TextBefore, defaultFont, defaultFontSize)
+			drawText(dc, text.TextBefore, defaultFont, defaultFontSize)
 		}
 
 		dc.SetFontFace(fontface)
@@ -205,14 +256,14 @@ func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font, defa
 		if text.TextAfter != nil {
 			text.TextAfter.X += text.X + (w / 2)
 			text.TextAfter.Y += text.Y
-			DrawText(dc, text.TextAfter, defaultFont, defaultFontSize)
+			drawText(dc, text.TextAfter, defaultFont, defaultFontSize)
 		}
 	} else if text.RightAligned {
 		// draw text before
 		if text.TextBefore != nil {
 			text.TextBefore.X += text.X - w
 			text.TextBefore.Y += text.Y
-			DrawText(dc, text.TextBefore, defaultFont, defaultFontSize)
+			drawText(dc, text.TextBefore, defaultFont, defaultFontSize)
 		}
 
 		dc.SetFontFace(fontface)
@@ -223,14 +274,14 @@ func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font, defa
 		if text.TextAfter != nil {
 			text.TextAfter.X += text.X
 			text.TextAfter.Y += text.Y
-			DrawText(dc, text.TextAfter, defaultFont, defaultFontSize)
+			drawText(dc, text.TextAfter, defaultFont, defaultFontSize)
 		}
 	} else {
 		// draw text before
 		if text.TextBefore != nil {
 			text.TextBefore.X += text.X
 			text.TextBefore.Y += text.Y
-			DrawText(dc, text.TextBefore, defaultFont, defaultFontSize)
+			drawText(dc, text.TextBefore, defaultFont, defaultFontSize)
 		}
 
 		dc.SetFontFace(fontface)
@@ -241,12 +292,12 @@ func DrawText(dc *gg.Context, text *TextObject, defaultFont *truetype.Font, defa
 		if text.TextAfter != nil {
 			text.TextAfter.X += text.X + w
 			text.TextAfter.Y += text.Y
-			DrawText(dc, text.TextAfter, defaultFont, defaultFontSize)
+			drawText(dc, text.TextAfter, defaultFont, defaultFontSize)
 		}
 	}
 }
 
-func DrawImage(dc *gg.Context, image *ImageObject) {
+func drawImage(dc *gg.Context, image *ImageObject) {
 	if image.Centered {
 		dc.DrawImageAnchored(resize.Resize(image.W, image.H, Circle(image.Src), resize.Lanczos2), image.X, image.Y, 0.5, 0.5)
 	} else if image.RightAligned {
